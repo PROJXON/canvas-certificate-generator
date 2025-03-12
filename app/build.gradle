@@ -23,6 +23,8 @@ dependencies {
 
     // This dependency is used by the application.
     implementation libs.guava
+
+    implementation group: 'com.itextpdf', name: 'itextpdf', version: '5.5.13.4'
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
