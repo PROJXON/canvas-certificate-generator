@@ -17,7 +17,7 @@
             <TextBox Grid.Row="3" Grid.Column="1" Margin="0 5"/>
             <Label Grid.Row="4" Grid.Column="0" Margin="10">Pdf Destination:</Label>
             <TextBox Grid.Row="4" Grid.Column="1" Margin="0 5"/>
-            <Button HorizontalAlignment="Center" Grid.Row="5" Grid.Column="1">Generate</Button>
+            <Button HorizontalAlignment="Center" Grid.Row="5" Grid.Column="1" Click="Button_OnClick">Generate</Button>
         </Grid>
     </StackPanel>
 </Window>
