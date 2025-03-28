@@ -6,13 +6,13 @@
         x:Class="CanvasCertificateGenerator.MainWindow"
         Title="Canvas Certificate Generator">
     <StackPanel>
-        <Grid ShowGridLines="True" Margin="5" ColumnDefinitions="Auto, 150" RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto">
+        <Grid Margin="5" ColumnDefinitions="Auto, Auto" RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto">
             <Label Grid.Row="0" Grid.Column="0" Margin="10">Participant Name:</Label>
-            <TextBox Grid.Row="0" Grid.Column="1" Margin="0 5"/>
+            <TextBox Grid.Row="0" Grid.Column="1" Margin="0 5" Name="ParticipantName"/>
             <Label Grid.Row="1" Grid.Column="0" Margin="10">Course Name:</Label>
-            <TextBox Grid.Row="1" Grid.Column="1" Margin="0 5"/>
-            <Label Grid.Row="2" Grid.Column="0" Margin="10">Completion Date:</Label>
-            <TextBox Grid.Row="2" Grid.Column="1" Margin="0 5"/>
+            <TextBox Grid.Row="1" Grid.Column="1" Margin="0 5" Name="CourseName"/>
+            <Label Grid.Row="2" Grid.Column="0" Margin="10" Name="CompletionDate">Completion Date:</Label>
+            <DatePicker Grid.Row="2" Grid.Column="1" Margin="10"/>
             <Label Grid.Row="3" Grid.Column="0" Margin="10">Student Email:</Label>
             <TextBox Grid.Row="3" Grid.Column="1" Margin="0 5"/>
             <Label Grid.Row="4" Grid.Column="0" Margin="10">Pdf Destination:</Label>
