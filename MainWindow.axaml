@@ -8,17 +8,18 @@
     <StackPanel>
         <Grid Margin="5" ColumnDefinitions="Auto, Auto" RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto">
             <Label Grid.Row="0" Grid.Column="0" Margin="10">Participant Name:</Label>
-            <TextBox Grid.Row="0" Grid.Column="1" Margin="0 5" Name="ParticipantName"/>
+            <TextBox Grid.Row="0" Grid.Column="1" Margin="0 5" Name="participantName"/>
             <Label Grid.Row="1" Grid.Column="0" Margin="10">Course Name:</Label>
-            <TextBox Grid.Row="1" Grid.Column="1" Margin="0 5" Name="CourseName"/>
-            <Label Grid.Row="2" Grid.Column="0" Margin="10" Name="CompletionDate">Completion Date:</Label>
-            <DatePicker Grid.Row="2" Grid.Column="1" Margin="10"/>
+            <TextBox Grid.Row="1" Grid.Column="1" Margin="0 5" Name="courseName"/>
+            <Label Grid.Row="2" Grid.Column="0" Margin="10">Completion Date:</Label>
+            <DatePicker Grid.Row="2" Grid.Column="1" Margin="10" Name="completionDate"/>
             <Label Grid.Row="3" Grid.Column="0" Margin="10">Student Email:</Label>
-            <TextBox Grid.Row="3" Grid.Column="1" Margin="0 5"/>
+            <TextBox Grid.Row="3" Grid.Column="1" Margin="0 5" Name="studentEmail"/>
             <Label Grid.Row="4" Grid.Column="0" Margin="10">Pdf Destination:</Label>
             <Button HorizontalAlignment="Center" Grid.Row="4" Grid.Column="1" Click="FileDestinationButton_OnClick">Choose Folder...</Button>
             <TextBlock Grid.Row="5" Grid.Column="0">Selected Destination:</TextBlock>
             <TextBlock Grid.Row="5" Grid.Column="1" Name="filePathMessage"></TextBlock>
         </Grid>
+        <Button Margin="10" Click="GeneratePdfButton_OnClick">Generate</Button>
     </StackPanel>
 </Window>
