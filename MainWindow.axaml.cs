@@ -12,7 +12,7 @@ public partial class MainWindow : Window
         InitializeComponent();
     }
 
-    private async void Button_OnClick(object? sender, RoutedEventArgs e)
+    private async void FileDestinationButton_OnClick(object? sender, RoutedEventArgs e)
     {
         if (StorageProvider is not null)
         {
