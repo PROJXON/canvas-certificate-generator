@@ -17,6 +17,8 @@
             <TextBox Grid.Row="3" Grid.Column="1" Margin="0 5"/>
             <Label Grid.Row="4" Grid.Column="0" Margin="10">Pdf Destination:</Label>
             <Button HorizontalAlignment="Center" Grid.Row="4" Grid.Column="1" Click="FileDestinationButton_OnClick">Choose Folder...</Button>
+            <TextBlock Grid.Row="5" Grid.Column="0">Selected Destination:</TextBlock>
+            <TextBlock Grid.Row="5" Grid.Column="1" Name="filePathMessage"></TextBlock>
         </Grid>
     </StackPanel>
 </Window>

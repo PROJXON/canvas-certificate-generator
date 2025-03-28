@@ -31,6 +31,7 @@ public partial class MainWindow : Window
             {
                 // sets the selected folder as the path variable
                 path = result[0].Path.LocalPath;
+                filePathMessage.Text = path;
             }
         } catch (Exception err) {
             Console.WriteLine(err);
