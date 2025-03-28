@@ -6,6 +6,7 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
 
+
 public partial class MainWindow : Window
 {
     private string path = "";
@@ -23,13 +24,13 @@ public partial class MainWindow : Window
                 Title = "Choose Certificate Folder Destination",
             };
 
+            // Opens a dialog and allows the user to select a destination folder
             var result = await StorageProvider.OpenFolderPickerAsync(options);
 
-            Console.WriteLine(path);
-
-            if (result is not null)
+            if (result != null && result.Count > 0)
             {
-
+                // sets the selected folder as the path variable
+                path = result[0].Path.LocalPath;
             }
         } catch (Exception err) {
             Console.WriteLine(err);
