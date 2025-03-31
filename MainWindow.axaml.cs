@@ -47,7 +47,7 @@ public partial class MainWindow : Window
             string course = courseName.Text ?? string.Empty;
             DateTime date = completionDate.SelectedDate?.DateTime ?? DateTime.Today;
             var dateStr = date.ToShortDateString();
-            string filename = $"{participant.Replace(" ", "_").ToLower()}{course.Replace(" ", "_").ToLower()}_tempfile.pdf";
+            string filename = $"{participant.Replace(" ", "_").ToLower()}{course.Replace(" ", "_").ToLower()}_certificate.pdf";
 
             // set up PdfSharp document and page
             var document = new PdfDocument();
