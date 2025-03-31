@@ -5,7 +5,8 @@ using System.IO;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
-
+using PdfSharpCore.Pdf;
+using PdfSharpCore.Drawing;
 
 public partial class MainWindow : Window
 {
@@ -42,7 +43,27 @@ public partial class MainWindow : Window
     {
         try
         {
+            string participant = participantName.Text ?? string.Empty;
+            string course = courseName.Text ?? string.Empty;
+            DateTime date = completionDate.SelectedDate?.DateTime ?? DateTime.Today;
+            var dateStr = date.ToShortDateString();
+            string filename = $"{participant.Replace(" ", "_").ToLower()}{course.Replace(" ", "_").ToLower()}_tempfile.pdf";
 
+            // set up PdfSharp document and page
+            var document = new PdfDocument();
+            var page = document.AddPage();
+            page.Width = XUnit.FromPoint(2000);
+            page.Height = XUnit.FromPoint(1545);
+
+            var gfx = XGraphics.FromPdfPage(page);
+
+            // loads background image
+            var background = XImage.FromFile("./Template.png");
+            gfx.DrawImage(background, 0, 0, page.Width, page.Height);
+
+
+
+            document.Save(filename);
         }
         catch (Exception)
         {
