@@ -39,7 +39,7 @@ public partial class MainWindow : Window
         }
     }
 
-    private async void GeneratePdfButton_OnClick(object? sender, RoutedEventArgs e)
+    private void GeneratePdfButton_OnClick(object? sender, RoutedEventArgs e)
     {
         try
         {
