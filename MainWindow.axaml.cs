@@ -63,7 +63,7 @@ public partial class MainWindow : Window
 
 
 
-            document.Save(filename);
+            document.Save(Path.Combine(path, filename));
         }
         catch (Exception)
         {
