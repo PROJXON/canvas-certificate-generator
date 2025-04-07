@@ -7,6 +7,7 @@ using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
 using PdfSharpCore.Pdf;
 using PdfSharpCore.Drawing;
+using PdfSharpCore.Fonts;
 
 public partial class MainWindow : Window
 {
@@ -14,6 +15,9 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
+
+        // Register the custom font resolver
+        GlobalFontSettings.FontResolver = new CustomFontResolver();
     }
 
     private async void FileDestinationButton_OnClick(object? sender, RoutedEventArgs e)
@@ -66,8 +70,8 @@ public partial class MainWindow : Window
             var yellowBrush = new XSolidBrush(XColor.FromArgb(255, 215, 0));
 
             gfx.DrawString(participant, nameFont, whiteBrush, new XPoint(1220, 980), XStringFormats.Center);
-            gfx.DrawString(course.ToUpper(), courseFont, yellowBrush, new XPoint(1210, 485), XStringFormats.Center);
-            gfx.DrawString(date.ToShortDateString(), dateFont, whiteBrush, new XPoint(1480, 1408), XStringFormats.Center);
+            gfx.DrawString(course.ToUpper(), courseFont, yellowBrush, new XPoint(1220, 485), XStringFormats.Center);
+            gfx.DrawString(date.ToShortDateString(), dateFont, whiteBrush, new XPoint(1475, 1410), XStringFormats.Center);
             gfx.DrawString($"This Certificate is presented to {participant} for their outstanding", smallFont, whiteBrush, new XPoint(1220, 1130), XStringFormats.Center);
             gfx.DrawString($"completion of the {course} course (as a {participantRole}).", smallFont, whiteBrush, new XPoint(1220, 1170), XStringFormats.Center);
 
@@ -75,7 +79,6 @@ public partial class MainWindow : Window
         }
         catch (Exception)
         {
-
             throw;
         }
     }
