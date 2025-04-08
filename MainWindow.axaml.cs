@@ -1,4 +1,5 @@
 namespace CanvasCertificateGenerator;
+using CanvasCertificateGenerator.Services;
 
 using System;
 using System.IO;
@@ -43,7 +44,7 @@ public partial class MainWindow : Window
         }
     }
 
-    private void GeneratePdfButton_OnClick(object? sender, RoutedEventArgs e)
+    private async void GeneratePdfButton_OnClick(object? sender, RoutedEventArgs e)
     {
         try
         {
@@ -76,6 +77,8 @@ public partial class MainWindow : Window
             gfx.DrawString($"completion of the {course} course (as a {participantRole}).", smallFont, whiteBrush, new XPoint(1220, 1170), XStringFormats.Center);
 
             document.Save(Path.Combine(path, filename));
+
+            // await SendEmailWithAttachment.Send();
         }
         catch (Exception)
         {
