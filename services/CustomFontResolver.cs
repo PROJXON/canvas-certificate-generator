@@ -1,3 +1,5 @@
+namespace CanvasCertificateGenerator.Services;
+
 using PdfSharpCore.Fonts;
 using System.IO;
 using System;
