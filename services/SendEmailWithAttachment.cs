@@ -22,9 +22,9 @@ public class SendEmailWithAttachment
     public static async Task Send(string email)
     {
         UserCredential credential;
-        using (var stream = new FileStream("credentials.json", FileMode.Open, FileAccess.Read))
+        using (var stream = new FileStream("./assets/credentials.json", FileMode.Open, FileAccess.Read))
         {
-            string credPath = "token.json";
+            string credPath = "../assets";
             credential = await GoogleWebAuthorizationBroker.AuthorizeAsync(
                 GoogleClientSecrets.FromStream(stream).Secrets,
                 new[] { GmailService.Scope.GmailSend },
