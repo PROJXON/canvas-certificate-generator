@@ -1,19 +1,11 @@
 namespace CanvasCertificateGenerator.Services;
 
 using System;
-using RestSharp;
-using RestSharp.Authenticators;
 using System.Threading.Tasks;
 using DotNetEnv;
-
-using Google.Apis.Auth.OAuth2;
-using Google.Apis.Gmail.v1;
-using Google.Apis.Gmail.v1.Data;
-using Google.Apis.Services;
-using Google.Apis.Util.Store;
-using System.IO;
 using System.Text;
-using System.Threading;
+using System.Net.Mail;
+using System.Net;
 using System.ComponentModel.DataAnnotations;
 
 public class SendEmailWithAttachment
@@ -21,38 +13,40 @@ public class SendEmailWithAttachment
     //
     public static async Task Send(string email, string participant, string course)
     {
-        string participantFirstName = participant.Split(" ")[0];
+        Env.Load();
 
-        UserCredential credential;
-        using (var stream = new FileStream("./assets/credentials.json", FileMode.Open, FileAccess.Read))
+        string smtpEmail = Environment.GetEnvironmentVariable("SMTP_EMAIL") ?? string.Empty;
+        string smtpPassword = Environment.GetEnvironmentVariable("SMTP_PASSWORD") ?? string.Empty;
+
+        if (string.IsNullOrWhiteSpace(smtpEmail) || string.IsNullOrWhiteSpace(smtpPassword))
         {
-            string credPath = "../assets";
-            credential = await GoogleWebAuthorizationBroker.AuthorizeAsync(
-                GoogleClientSecrets.FromStream(stream).Secrets,
-                new[] { GmailService.Scope.GmailSend },
-                "user",
-                CancellationToken.None,
-                new FileDataStore(credPath, true));
+            throw new InvalidOperationException("SMTP credentials are not configure.");
         }
 
-        // Create the Gmail API service
-        var service = new GmailService(new BaseClientService.Initializer()
-        {
-            HttpClientInitializer = credential,
-            ApplicationName = "Canvas Certificate Generator",
-        });
-
-        // Compose the email
-        string bodyText = $"Congratulations, {participantFirstName}!\n\nThis is your certificate for the successful completion of the {course} course on Canvas.";
+        string participantFirstName = participant.Split(" ")[0];
         string subjectText = $"{course} Certificate";
-        var message = new Message
-        {
-            Raw = Base64UrlEncode(CreateEmail(email, "PROJXON Programs", subjectText, bodyText))
-        };
+        string bodyText = $"Congratulations, {participantFirstName}!\n\nThis is your certificate for the successful completion of the {course} course on Canvas.";
 
-        // Send the email
-        var result = await service.Users.Messages.Send(message, "me").ExecuteAsync();
-        Console.WriteLine("Message ID: " + result.Id);
+        // Set up the SMTP client
+        using var smtpClient = new SmtpClient("smtp.gmail.com", 587);
+        {
+            smtpClient.Credentials = new NetworkCredential(smtpEmail, smtpPassword);
+            smtpClient.EnableSsl = true;
+
+            // Create the email message
+            var mailMessage = new MailMessage
+            {
+                From = new MailAddress(smtpEmail, "PROJXON Programs"),
+                Subject = subjectText,
+                Body = bodyText,
+                IsBodyHtml = false
+            };
+            mailMessage.To.Add(email);
+
+            // Send the email
+            await smtpClient.SendMailAsync(mailMessage);
+            Console.WriteLine("Email sent successfully!");
+        }
     }
 
     static string CreateEmail(string to, string from, string subject, string body)
