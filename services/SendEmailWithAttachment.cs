@@ -19,8 +19,10 @@ using System.ComponentModel.DataAnnotations;
 public class SendEmailWithAttachment
 {
     //
-    public static async Task Send(string email)
+    public static async Task Send(string email, string participant, string course)
     {
+        string participantFirstName = participant.Split(" ")[0];
+
         UserCredential credential;
         using (var stream = new FileStream("./assets/credentials.json", FileMode.Open, FileAccess.Read))
         {
@@ -37,13 +39,15 @@ public class SendEmailWithAttachment
         var service = new GmailService(new BaseClientService.Initializer()
         {
             HttpClientInitializer = credential,
-            ApplicationName = "Gmail API C# Send Example",
+            ApplicationName = "Canvas Certificate Generator",
         });
 
         // Compose the email
+        string bodyText = $"Congratulations, {participantFirstName}!\n\nThis is your certificate for the successful completion of the {course} course on Canvas.";
+        string subjectText = $"{course} Certificate";
         var message = new Message
         {
-            Raw = Base64UrlEncode(CreateEmail("recipient@example.com", "me", "Hello from Gmail API", "This is the body of the email."))
+            Raw = Base64UrlEncode(CreateEmail(email, "PROJXON Programs", subjectText, bodyText))
         };
 
         // Send the email

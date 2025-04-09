@@ -82,7 +82,7 @@ public partial class MainWindow : Window
 
             if (isEmailChecked && SendEmailWithAttachment.ValidateEmail(email))
             {
-                await SendEmailWithAttachment.Send(email);
+                await SendEmailWithAttachment.Send(email, participant, course);
             }
             else
             {
