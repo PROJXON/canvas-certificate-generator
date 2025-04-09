@@ -7,14 +7,15 @@ using System.Text;
 using System.Net.Mail;
 using System.Net;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
+using Tmds.DBus.Protocol;
 
 public class SendEmailWithAttachment
 {
     //
-    public static async Task Send(string email, string participant, string course)
+    public static async Task Send(string email, string participant, string course, string pdfPath)
     {
         Env.Load();
-
         string smtpEmail = Environment.GetEnvironmentVariable("SMTP_EMAIL") ?? string.Empty;
         string smtpPassword = Environment.GetEnvironmentVariable("SMTP_PASSWORD") ?? string.Empty;
 
@@ -43,9 +44,22 @@ public class SendEmailWithAttachment
             };
             mailMessage.To.Add(email);
 
-            // Send the email
-            await smtpClient.SendMailAsync(mailMessage);
-            Console.WriteLine("Email sent successfully!");
+            if (File.Exists(pdfPath))
+            {
+                var attachment = new Attachment(pdfPath, "application/pdf")
+                {
+                    Name = $"{course} Certificate"
+                };
+                mailMessage.Attachments.Add(attachment);
+
+                await smtpClient.SendMailAsync(mailMessage);
+                Console.WriteLine("Email sent successfully!");
+            }
+            else
+            {
+                Console.WriteLine("Failed to find attachment.");
+            }
+
         }
     }
 
