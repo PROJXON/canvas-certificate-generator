@@ -9,10 +9,21 @@ using Avalonia.Platform.Storage;
 using PdfSharpCore.Pdf;
 using PdfSharpCore.Drawing;
 using PdfSharpCore.Fonts;
+using Tmds.DBus.Protocol;
 
 public partial class MainWindow : Window
 {
-    private string path = "";
+    private string participant = "";
+    private string course = "";
+    private DateTime date;
+    private string fileName = "";
+    private string participantRole = "";
+    private bool isEmailChecked = false;
+    private bool isSaveLocallyChecked = false;
+    private string email = "";
+    private string fullFilePath = "";
+    private string folderPath = "";
+
     public MainWindow()
     {
         InitializeComponent();
@@ -36,8 +47,8 @@ public partial class MainWindow : Window
             if (result != null && result.Count > 0)
             {
                 // sets the selected folder as the path variable
-                path = result[0].Path.LocalPath;
-                filePathMessage.Text = path;
+                folderPath = result[0].Path.LocalPath;
+                filePathMessage.Text = fullFilePath;
             }
         } catch (Exception err) {
             Console.WriteLine(err);
@@ -48,13 +59,7 @@ public partial class MainWindow : Window
     {
         try
         {
-            string participant = participantName.Text ?? string.Empty;
-            string course = courseName.Text ?? string.Empty;
-            DateTime date = completionDate.SelectedDate?.DateTime ?? DateTime.Today;
-            string filename = $"{participant.Replace(" ", "_").ToLower()}_{course.Replace(" ", "_").ToLower()}_certificate.pdf";
-            string participantRole = "participant";
-            var isEmailChecked = sendEmail.IsChecked ?? false;
-            string email = studentEmail.Text ?? string.Empty;
+            GatherInput();
 
             var document = new PdfDocument();
             var page = document.AddPage();
@@ -78,21 +83,36 @@ public partial class MainWindow : Window
             gfx.DrawString($"This Certificate is presented to {participant} for their outstanding", smallFont, whiteBrush, new XPoint(1220, 1130), XStringFormats.Center);
             gfx.DrawString($"completion of the {course} course (as a {participantRole}).", smallFont, whiteBrush, new XPoint(1220, 1170), XStringFormats.Center);
 
-            document.Save(Path.Combine(path, filename));
+            document.Save(fullFilePath);
 
             if (isEmailChecked && SendEmailWithAttachment.ValidateRecipientEmailAddress(email))
             {
-                await SendEmailWithAttachment.Send(email, participant, course, Path.Combine(path, filename));
+                await SendEmailWithAttachment.Send(email, participant, course, fullFilePath);
             }
             else
             {
                 message.Text = "Missing or invalid email address. Please provide a valid email.";
             }
 
+            message.Text = $"File has been saved to {fullFilePath}";
+
         }
         catch (Exception)
         {
             throw;
         }
+    }
+
+    private void GatherInput()
+    {
+        participant = participantName.Text ?? string.Empty;
+        course = courseName.Text ?? string.Empty;
+        date = completionDate.SelectedDate?.DateTime ?? DateTime.Today;
+        fileName = $"{participant.Replace(" ", "_").ToLower()}_{course.Replace(" ", "_").ToLower()}_certificate.pdf";
+        participantRole = "participant";
+        isEmailChecked = sendEmail.IsChecked ?? false;
+        isSaveLocallyChecked = saveLocally.IsChecked ?? false;
+        email = studentEmail.Text ?? string.Empty;
+        fullFilePath = Path.Combine(folderPath, fileName);
     }
 }
