@@ -54,6 +54,7 @@ public partial class MainWindow : Window
             string filename = $"{participant.Replace(" ", "_").ToLower()}_{course.Replace(" ", "_").ToLower()}_certificate.pdf";
             string participantRole = "participant";
             var isEmailChecked = sendEmail.IsChecked ?? false;
+            string email = studentEmail.Text ?? string.Empty;
 
             var document = new PdfDocument();
             var page = document.AddPage();
@@ -79,7 +80,7 @@ public partial class MainWindow : Window
 
             document.Save(Path.Combine(path, filename));
 
-            if (isEmailChecked)
+            if (isEmailChecked && SendEmailWithAttachment.ValidateEmail(email))
             {
                 await SendEmailWithAttachment.Send(email);
             }
