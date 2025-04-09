@@ -14,11 +14,12 @@ using Google.Apis.Util.Store;
 using System.IO;
 using System.Text;
 using System.Threading;
+using System.ComponentModel.DataAnnotations;
 
 public class SendEmailWithAttachment
 {
     //
-    public static async Task Send()
+    public static async Task Send(string email)
     {
         UserCredential credential;
         using (var stream = new FileStream("credentials.json", FileMode.Open, FileAccess.Read))
@@ -69,5 +70,16 @@ public class SendEmailWithAttachment
             .Replace('+', '-')
             .Replace('/', '_')
             .Replace("=", "");
+    }
+
+    static bool ValidateEmail(string email)
+    {
+        if (string.IsNullOrWhiteSpace(email))
+        {
+            return false;
+        }
+
+        var emailAttribute = new EmailAddressAttribute();
+        return emailAttribute.IsValid(email);
     }
 }
