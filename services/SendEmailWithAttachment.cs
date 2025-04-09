@@ -76,7 +76,7 @@ public class SendEmailWithAttachment
             .Replace("=", "");
     }
 
-    public static bool ValidateEmail(string email)
+    public static bool ValidateRecipientEmailAddress(string email)
     {
         if (string.IsNullOrWhiteSpace(email))
         {

@@ -80,7 +80,7 @@ public partial class MainWindow : Window
 
             document.Save(Path.Combine(path, filename));
 
-            if (isEmailChecked && SendEmailWithAttachment.ValidateEmail(email))
+            if (isEmailChecked && SendEmailWithAttachment.ValidateRecipientEmailAddress(email))
             {
                 await SendEmailWithAttachment.Send(email, participant, course);
             }
