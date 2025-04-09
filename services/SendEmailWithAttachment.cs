@@ -61,15 +61,6 @@ public class SendEmailWithAttachment
         return email.ToString();
     }
 
-    static string Base64UrlEncode(string input)
-    {
-        var bytes = Encoding.UTF8.GetBytes(input);
-        return Convert.ToBase64String(bytes)
-            .Replace('+', '-')
-            .Replace('/', '_')
-            .Replace("=", "");
-    }
-
     public static bool ValidateRecipientEmailAddress(string email)
     {
         if (string.IsNullOrWhiteSpace(email))
