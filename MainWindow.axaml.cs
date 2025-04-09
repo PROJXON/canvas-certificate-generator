@@ -84,6 +84,10 @@ public partial class MainWindow : Window
             {
                 await SendEmailWithAttachment.Send(email);
             }
+            else
+            {
+                message.Text = "Missing or invalid email addres. Please provide a valid email.";
+            }
 
         }
         catch (Exception)
