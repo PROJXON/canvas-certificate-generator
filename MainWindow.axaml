@@ -21,6 +21,6 @@
             <TextBlock Grid.Row="5" Grid.Column="0">Selected Destination:</TextBlock>
             <TextBlock Grid.Row="5" Grid.Column="1" Name="filePathMessage"></TextBlock>
         </Grid>
-        <Button Margin="10" Click="GeneratePdfButton_OnClick">Generate</Button>
+        <Button Margin="10" Click="GeneratePdfButton_OnClick" HorizontalAlignment="Center">Generate</Button>
     </StackPanel>
 </Window>
