@@ -60,7 +60,7 @@ public partial class MainWindow : Window
             page.Height = XUnit.FromPoint(1545);
             var gfx = XGraphics.FromPdfPage(page);
 
-            var background = XImage.FromFile("./Template.png");
+            var background = XImage.FromFile("./assets/Template.png");
             gfx.DrawImage(background, 0, 0, page.Width, page.Height);
 
             var courseFont = new XFont("Geologica", 52, XFontStyle.Bold);

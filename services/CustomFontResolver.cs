@@ -14,11 +14,11 @@ public class CustomFontResolver : IFontResolver
         if (faceName == "Roboto")
         {
             // Load the font file as a byte array
-            return File.ReadAllBytes("./Fonts/Roboto-Regular.ttf");
+            return File.ReadAllBytes("./assets/fonts/Roboto-Regular.ttf");
         }
         if (faceName == "Geologica")
         {
-            return File.ReadAllBytes("./Fonts/Geologica-Bold.ttf");
+            return File.ReadAllBytes("./assets/fonts/Geologica-Bold.ttf");
         }
         throw new ArgumentException($"Font {faceName} is not available.");
     }
