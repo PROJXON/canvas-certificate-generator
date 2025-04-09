@@ -49,18 +49,6 @@ public class SendEmailWithAttachment
         }
     }
 
-    static string CreateEmail(string to, string from, string subject, string body)
-    {
-        var email = new StringBuilder();
-        email.AppendLine($"To: {to}");
-        email.AppendLine($"From: {from}");
-        email.AppendLine($"Subject: {subject}");
-        email.AppendLine("Content-Type: text/plain; charset=utf-8");
-        email.AppendLine();
-        email.AppendLine(body);
-        return email.ToString();
-    }
-
     public static bool ValidateRecipientEmailAddress(string email)
     {
         if (string.IsNullOrWhiteSpace(email))
