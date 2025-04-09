@@ -86,7 +86,7 @@ public partial class MainWindow : Window
             }
             else
             {
-                message.Text = "Missing or invalid email addres. Please provide a valid email.";
+                message.Text = "Missing or invalid email address. Please provide a valid email.";
             }
 
         }
