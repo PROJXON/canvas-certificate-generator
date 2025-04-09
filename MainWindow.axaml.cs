@@ -81,7 +81,7 @@ public partial class MainWindow : Window
 
             if (isEmailChecked)
             {
-                await SendEmailWithAttachment.Send();
+                await SendEmailWithAttachment.Send(email);
             }
 
         }
