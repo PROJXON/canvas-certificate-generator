@@ -53,6 +53,7 @@ public partial class MainWindow : Window
             DateTime date = completionDate.SelectedDate?.DateTime ?? DateTime.Today;
             string filename = $"{participant.Replace(" ", "_").ToLower()}_{course.Replace(" ", "_").ToLower()}_certificate.pdf";
             string participantRole = "participant";
+            var isEmailChecked = sendEmail.IsChecked ?? false;
 
             var document = new PdfDocument();
             var page = document.AddPage();
@@ -78,7 +79,11 @@ public partial class MainWindow : Window
 
             document.Save(Path.Combine(path, filename));
 
-            // await SendEmailWithAttachment.Send();
+            if (isEmailChecked)
+            {
+                await SendEmailWithAttachment.Send();
+            }
+
         }
         catch (Exception)
         {
