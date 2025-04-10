@@ -9,7 +9,6 @@ using Avalonia.Platform.Storage;
 using PdfSharpCore.Pdf;
 using PdfSharpCore.Drawing;
 using PdfSharpCore.Fonts;
-using Tmds.DBus.Protocol;
 
 public partial class MainWindow : Window
 {
@@ -74,7 +73,17 @@ public partial class MainWindow : Window
                 message.Text = "Missing or invalid email address. Please provide a valid email.";
             }
 
-            message.Text = $"File has been saved to {fullFilePath}";
+            if (!isSaveLocallyChecked)
+            {
+                File.Delete(fullFilePath);
+                Console.WriteLine("File deleted successfully");
+            }
+            else
+            {
+                message.Text = $"File has been saved to {fullFilePath}";
+            }
+
+
 
         }
         catch (Exception)
