@@ -14,12 +14,12 @@ public partial class MainWindow : Window
 {
     private string participant = "";
     private string course = "";
-    private DateTime date;
-    private string fileName = "";
     private string participantRole = "";
+    private string email = "";
+    private DateTime date;
     private bool isEmailChecked = false;
     private bool isSaveLocallyChecked = false;
-    private string email = "";
+    private string fileName = "";
     private string fullFilePath = "";
     private string folderPath = "";
 
@@ -76,33 +76,38 @@ public partial class MainWindow : Window
     {
         try
         {
+            message.Text = "";
             GatherInput();
-
             PdfDocument document = CreatePdf();
 
-            document.Save(fullFilePath);
+            if (string.IsNullOrWhiteSpace(participant) || string.IsNullOrWhiteSpace(course) || !completionDate.SelectedDate.HasValue)
+            {
+                message.Text = "Please ensure that all required fields are filled out.";
 
-            if (isEmailChecked && SendEmailWithAttachment.ValidateRecipientEmailAddress(email))
-            {
-                await SendEmailWithAttachment.Send(email, participant, course, fullFilePath);
-            }
-            else if (isEmailChecked && !SendEmailWithAttachment.ValidateRecipientEmailAddress(email))
-            {
-                message.Text = "Missing or invalid email address. Please provide a valid email.";
-            }
-
-            if (!isSaveLocallyChecked)
-            {
-                File.Delete(fullFilePath);
-                Console.WriteLine("File deleted successfully");
+                // TODO make borders of the required fields red when this happens
             }
             else
             {
-                message.Text = $"File has been saved to {fullFilePath}";
+                document.Save(fullFilePath);
+
+                if (isEmailChecked && SendEmailWithAttachment.ValidateRecipientEmailAddress(email))
+                {
+                    await SendEmailWithAttachment.Send(email, participant, course, fullFilePath);
+                }
+                else if (isEmailChecked && !SendEmailWithAttachment.ValidateRecipientEmailAddress(email))
+                {
+                    message.Text = "Missing or invalid email address. Please provide a valid email.";
+                }
+
+                if (!isSaveLocallyChecked)
+                {
+                    File.Delete(fullFilePath);
+                }
+                else
+                {
+                    message.Text = $"File has been saved to {fullFilePath}";
+                }
             }
-
-
-
         }
         catch (Exception)
         {
