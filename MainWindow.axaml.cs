@@ -69,7 +69,7 @@ public partial class MainWindow : Window
             {
                 await SendEmailWithAttachment.Send(email, participant, course, fullFilePath);
             }
-            else
+            else if (isEmailChecked && !SendEmailWithAttachment.ValidateRecipientEmailAddress(email))
             {
                 message.Text = "Missing or invalid email address. Please provide a valid email.";
             }
