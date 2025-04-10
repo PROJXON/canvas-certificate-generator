@@ -20,11 +20,11 @@
             <CheckBox Grid.Row="4" Grid.Column="1" Margin="0 5" Name="sendEmail"/>
 
             <Label Grid.Row="5" Grid.Column="0" Margin="10">Save a version locally?</Label>
-            <CheckBox Grid.Row="5" Grid.Column="1" Margin="0 5" Name="saveLocally"/>
-            <Label Grid.Row="6" Grid.Column="0" Margin="10">Pdf Destination:</Label>
-            <Button Grid.Row="6" Grid.Column="1" Click="FileDestinationButton_OnClick">Choose Folder...</Button>
-            <TextBlock Grid.Row="7" Grid.Column="0">Selected Destination:</TextBlock>
-            <TextBlock Grid.Row="7" Grid.Column="1" Name="filePathMessage"></TextBlock>
+            <CheckBox Grid.Row="5" Grid.Column="1" Margin="0 5" Name="saveLocally" Checked="SaveLocallyCheckbox_OnChecked" Unchecked="SaveLocallyCheckbox_OnUnChecked"/>
+            <Label Grid.Row="6" Grid.Column="0" Margin="10" Name="pdfDestinationLabel" IsVisible="False">Pdf Destination:</Label>
+            <Button Grid.Row="6" Grid.Column="1" Click="FileDestinationButton_OnClick" Name="pdfDestinationButton" IsVisible="False">Choose Folder...</Button>
+            <TextBlock Grid.Row="7" Grid.Column="0" Name="filePathDisplayLabel" IsVisible="False">Selected Destination:</TextBlock>
+            <TextBlock Grid.Row="7" Grid.Column="1" Name="filePathMessage" IsVisible="False"></TextBlock>
         </Grid>
         <TextBlock Margin="10" Name="message" HorizontalAlignment="Center" Foreground="Red"></TextBlock>
         <Button Margin="10" Click="GeneratePdfButton_OnClick" HorizontalAlignment="Center">Generate</Button>

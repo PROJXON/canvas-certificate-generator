@@ -54,6 +54,24 @@ public partial class MainWindow : Window
         }
     }
 
+    private void SaveLocallyCheckbox_OnChecked(object? sender, RoutedEventArgs e)
+    {
+        pdfDestinationLabel.IsVisible = true;
+        pdfDestinationButton.IsVisible = true;
+        filePathDisplayLabel.IsVisible = true;
+        filePathMessage.IsVisible = true;
+        Height = 500;
+    }
+
+    private void SaveLocallyCheckbox_OnUnChecked(object? sender, RoutedEventArgs e)
+    {
+        pdfDestinationLabel.IsVisible = false;
+        pdfDestinationButton.IsVisible = false;
+        filePathDisplayLabel.IsVisible = false;
+        filePathMessage.IsVisible = false;
+        Height = 450;
+    }
+
     private async void GeneratePdfButton_OnClick(object? sender, RoutedEventArgs e)
     {
         try
