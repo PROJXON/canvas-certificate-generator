@@ -85,14 +85,16 @@ public partial class MainWindow : Window
         {
             GatherInput();
 
-            if (ValidateInput())
+            if (!ValidateInput())
             {
-                CertificateData data = new(participant, course, date, participantRole);
-                PdfDocument pdf = CertificateService.CreatePdf(data);
-                fullFilePath = Path.Combine(folderPath, fileName);
-                pdf.Save(fullFilePath);
-                await EmailService.SendAsync(email, participant, course, fullFilePath);
+                return;
             }
+
+            CertificateData data = new(participant, course, date, participantRole);
+            PdfDocument pdf = CertificateService.CreatePdf(data);
+            fullFilePath = Path.Combine(folderPath, fileName);
+            pdf.Save(fullFilePath);
+            await EmailService.SendAsync(email, participant, course, fullFilePath);
 
             if (!isSaveLocallyChecked)
             {
@@ -131,9 +133,22 @@ public partial class MainWindow : Window
 
             return false;
         }
+
+        if (isSaveLocallyChecked && string.IsNullOrWhiteSpace(folderPath))
+        {
+            message.Text = "Please select a folder to save the file.";
+            return false;
+        }
+
         if (isEmailChecked && !EmailService.Validate(email))
         {
             message.Text = "Missing or invalid email address. Please provide a valid email.";
+            return false;
+        }
+
+        if (!isEmailChecked && !isSaveLocallyChecked)
+        {
+            message.Text = "Please select whether you would like to save the pdf, email it, or both.";
             return false;
         }
 
