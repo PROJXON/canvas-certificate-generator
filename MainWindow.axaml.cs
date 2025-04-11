@@ -89,6 +89,7 @@ public partial class MainWindow : Window
             {
                 CertificateData data = new(participant, course, date, participantRole);
                 PdfDocument pdf = CertificateService.CreatePdf(data);
+                fullFilePath = Path.Combine(folderPath, fileName);
                 pdf.Save(fullFilePath);
                 await EmailService.SendAsync(email, participant, course, fullFilePath);
             }
@@ -118,7 +119,6 @@ public partial class MainWindow : Window
         isEmailChecked = sendEmail.IsChecked ?? false;
         isSaveLocallyChecked = saveLocally.IsChecked ?? false;
         email = studentEmail.Text ?? string.Empty;
-        fullFilePath = Path.Combine(folderPath, fileName);
     }
 
     private bool ValidateInput()
