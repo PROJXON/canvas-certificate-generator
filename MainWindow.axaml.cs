@@ -90,11 +90,11 @@ public partial class MainWindow : Window
             {
                 document.Save(fullFilePath);
 
-                if (isEmailChecked && SendEmailWithAttachment.ValidateRecipientEmailAddress(email))
+                if (isEmailChecked && EmailService.ValidateRecipientEmailAddress(email))
                 {
-                    await SendEmailWithAttachment.Send(email, participant, course, fullFilePath);
+                    await EmailService.Send(email, participant, course, fullFilePath);
                 }
-                else if (isEmailChecked && !SendEmailWithAttachment.ValidateRecipientEmailAddress(email))
+                else if (isEmailChecked && !EmailService.ValidateRecipientEmailAddress(email))
                 {
                     message.Text = "Missing or invalid email address. Please provide a valid email.";
                 }

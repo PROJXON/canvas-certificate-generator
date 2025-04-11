@@ -3,14 +3,12 @@ namespace CanvasCertificateGenerator.Services;
 using System;
 using System.Threading.Tasks;
 using DotNetEnv;
-using System.Text;
 using System.Net.Mail;
 using System.Net;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
-using Tmds.DBus.Protocol;
 
-public class SendEmailWithAttachment
+public class EmailService
 {
     //
     public static async Task Send(string email, string participant, string course, string pdfPath)
