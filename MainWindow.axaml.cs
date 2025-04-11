@@ -131,13 +131,10 @@ public partial class MainWindow : Window
 
             return false;
         }
-        else
+        if (isEmailChecked && !EmailService.Validate(email))
         {
-            if (isEmailChecked && !EmailService.Validate(email))
-            {
-                message.Text = "Missing or invalid email address. Please provide a valid email.";
-                return false;
-            }
+            message.Text = "Missing or invalid email address. Please provide a valid email.";
+            return false;
         }
 
         return true;
