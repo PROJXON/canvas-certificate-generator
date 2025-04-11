@@ -77,7 +77,7 @@ public partial class MainWindow : Window
         {
             message.Text = "";
             GatherInput();
-            PdfDocument document = CertificateService.CreatePdf(participant, course, date, participantRole);
+            PdfDocument pdf = CertificateService.CreatePdf(participant, course, date, participantRole);
 
             if (string.IsNullOrWhiteSpace(participant) || string.IsNullOrWhiteSpace(course) || !completionDate.SelectedDate.HasValue)
             {
@@ -87,7 +87,7 @@ public partial class MainWindow : Window
             }
             else
             {
-                document.Save(fullFilePath);
+                pdf.Save(fullFilePath);
 
                 if (isEmailChecked && EmailService.ValidateRecipientEmailAddress(email))
                 {
