@@ -88,35 +88,19 @@ public partial class MainWindow : Window
             CertificateData data = new(participant, course, date, participantRole);
             PdfDocument pdf = CertificateService.CreatePdf(data);
 
-            if (string.IsNullOrWhiteSpace(participant) || string.IsNullOrWhiteSpace(course) || !completionDate.SelectedDate.HasValue)
+            if (ValidateInput())
             {
-                message.Text = "Please ensure that all required fields are filled out.";
+                pdf.Save(fullFilePath);
+                await EmailService.SendAsync(email, participant, course, fullFilePath);
+            }
 
-                // TODO make borders of the required fields red when this happens
-
-                return;
+            if (!isSaveLocallyChecked)
+            {
+                File.Delete(fullFilePath);
             }
             else
             {
-                pdf.Save(fullFilePath);
-
-                if (isEmailChecked && EmailService.Validate(email))
-                {
-                    await EmailService.SendAsync(email, participant, course, fullFilePath);
-                }
-                else if (isEmailChecked && !EmailService.Validate(email))
-                {
-                    message.Text = "Missing or invalid email address. Please provide a valid email.";
-                }
-
-                if (!isSaveLocallyChecked)
-                {
-                    File.Delete(fullFilePath);
-                }
-                else
-                {
-                    message.Text = $"File has been saved to {fullFilePath}";
-                }
+                message.Text = $"File has been saved to {fullFilePath}";
             }
         }
         catch (Exception)
@@ -136,5 +120,27 @@ public partial class MainWindow : Window
         isSaveLocallyChecked = saveLocally.IsChecked ?? false;
         email = studentEmail.Text ?? string.Empty;
         fullFilePath = Path.Combine(folderPath, fileName);
+    }
+
+    private bool ValidateInput()
+    {
+        if (string.IsNullOrWhiteSpace(participant) || string.IsNullOrWhiteSpace(course) || !completionDate.SelectedDate.HasValue)
+        {
+            message.Text = "Please ensure that all required fields are filled out.";
+
+            // TODO make borders of the required fields red when this happens
+
+            return false;
+        }
+        else
+        {
+            if (isEmailChecked && !EmailService.Validate(email))
+            {
+                message.Text = "Missing or invalid email address. Please provide a valid email.";
+                return false;
+            }
+        }
+
+        return true;
     }
 }
