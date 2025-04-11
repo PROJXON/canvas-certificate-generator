@@ -11,6 +11,14 @@ using PdfSharpCore.Fonts;
 
 public partial class MainWindow : Window
 {
+    public record CertificateData
+    (
+        string Participant,
+        string Course,
+        DateTime Date,
+        string ParticipantRole
+    );
+
     private string participant = "";
     private string course = "";
     private string participantRole = "";
@@ -77,13 +85,16 @@ public partial class MainWindow : Window
         {
             message.Text = "";
             GatherInput();
-            PdfDocument pdf = CertificateService.CreatePdf(participant, course, date, participantRole);
+            CertificateData data = new(participant, course, date, participantRole);
+            PdfDocument pdf = CertificateService.CreatePdf(data);
 
             if (string.IsNullOrWhiteSpace(participant) || string.IsNullOrWhiteSpace(course) || !completionDate.SelectedDate.HasValue)
             {
                 message.Text = "Please ensure that all required fields are filled out.";
 
                 // TODO make borders of the required fields red when this happens
+
+                return;
             }
             else
             {
