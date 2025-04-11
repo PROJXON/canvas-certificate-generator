@@ -61,7 +61,8 @@ public class EmailService
         }
     }
 
-    public static bool ValidateRecipientEmailAddress(string email)
+    // Validate recipient's email address
+    public static bool Validate(string email)
     {
         if (string.IsNullOrWhiteSpace(email))
         {

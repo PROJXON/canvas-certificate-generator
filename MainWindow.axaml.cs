@@ -100,11 +100,11 @@ public partial class MainWindow : Window
             {
                 pdf.Save(fullFilePath);
 
-                if (isEmailChecked && EmailService.ValidateRecipientEmailAddress(email))
+                if (isEmailChecked && EmailService.Validate(email))
                 {
                     await EmailService.SendAsync(email, participant, course, fullFilePath);
                 }
-                else if (isEmailChecked && !EmailService.ValidateRecipientEmailAddress(email))
+                else if (isEmailChecked && !EmailService.Validate(email))
                 {
                     message.Text = "Missing or invalid email address. Please provide a valid email.";
                 }
