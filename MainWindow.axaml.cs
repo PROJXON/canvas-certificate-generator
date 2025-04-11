@@ -91,7 +91,7 @@ public partial class MainWindow : Window
 
                 if (isEmailChecked && EmailService.ValidateRecipientEmailAddress(email))
                 {
-                    await EmailService.Send(email, participant, course, fullFilePath);
+                    await EmailService.SendAsync(email, participant, course, fullFilePath);
                 }
                 else if (isEmailChecked && !EmailService.ValidateRecipientEmailAddress(email))
                 {

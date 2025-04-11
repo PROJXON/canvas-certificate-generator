@@ -11,7 +11,7 @@ using System.IO;
 public class EmailService
 {
     //
-    public static async Task Send(string email, string participant, string course, string pdfPath)
+    public static async Task SendAsync(string email, string participant, string course, string pdfPath)
     {
         Env.Load();
         string smtpEmail = Environment.GetEnvironmentVariable("SMTP_EMAIL") ?? string.Empty;
