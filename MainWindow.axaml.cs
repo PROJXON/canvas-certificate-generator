@@ -83,13 +83,12 @@ public partial class MainWindow : Window
     {
         try
         {
-            message.Text = "";
             GatherInput();
-            CertificateData data = new(participant, course, date, participantRole);
-            PdfDocument pdf = CertificateService.CreatePdf(data);
 
             if (ValidateInput())
             {
+                CertificateData data = new(participant, course, date, participantRole);
+                PdfDocument pdf = CertificateService.CreatePdf(data);
                 pdf.Save(fullFilePath);
                 await EmailService.SendAsync(email, participant, course, fullFilePath);
             }
