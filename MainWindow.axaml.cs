@@ -8,6 +8,8 @@ using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
 using PdfSharpCore.Pdf;
 using PdfSharpCore.Fonts;
+using System.Threading.Tasks.Dataflow;
+using Tmds.DBus.Protocol;
 
 public partial class MainWindow : Window
 {
@@ -54,7 +56,7 @@ public partial class MainWindow : Window
             {
                 // sets the selected folder as the path variable
                 folderPath = result[0].Path.LocalPath;
-                filePathMessage.Text = fullFilePath;
+                filePathMessage.Text = folderPath;
             }
         } catch (Exception err) {
             Console.WriteLine(err);
@@ -87,6 +89,7 @@ public partial class MainWindow : Window
 
             if (!ValidateInput())
             {
+                message.Classes.Set("invalid", true);
                 return;
             }
 
@@ -95,6 +98,9 @@ public partial class MainWindow : Window
             fullFilePath = Path.Combine(folderPath, fileName);
             pdf.Save(fullFilePath);
             await EmailService.SendAsync(email, participant, course, fullFilePath);
+
+            message.Classes.Set("success", true);
+            message.Text = "Email sent successfully!";
 
             if (!isSaveLocallyChecked)
             {
@@ -125,18 +131,11 @@ public partial class MainWindow : Window
 
     private bool ValidateInput()
     {
+        MarkInvalidControls();
+
         if (string.IsNullOrWhiteSpace(participant) || string.IsNullOrWhiteSpace(course) || !completionDate.SelectedDate.HasValue)
         {
             message.Text = "Please ensure that all required fields are filled out.";
-
-            // TODO make borders of the required fields red when this happens
-
-            return false;
-        }
-
-        if (isSaveLocallyChecked && string.IsNullOrWhiteSpace(folderPath))
-        {
-            message.Text = "Please select a folder to save the file.";
             return false;
         }
 
@@ -152,6 +151,21 @@ public partial class MainWindow : Window
             return false;
         }
 
+        if (isSaveLocallyChecked && string.IsNullOrWhiteSpace(folderPath))
+        {
+            message.Text = "Please select a folder to save the file in.";
+            return false;
+        }
+
         return true;
+    }
+
+    private void MarkInvalidControls()
+    {
+        participantName.Classes.Set("invalid", string.IsNullOrWhiteSpace(participant));
+        courseName.Classes.Set("invalid", string.IsNullOrWhiteSpace(course));
+        completionDate.Classes.Set("invalid", !completionDate.SelectedDate.HasValue);
+        pdfDestinationButton.Classes.Set("invalid", string.IsNullOrWhiteSpace(folderPath) && isSaveLocallyChecked);
+        studentEmail.Classes.Set("invalid", !EmailService.Validate(email) && isEmailChecked);
     }
 }

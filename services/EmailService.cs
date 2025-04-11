@@ -51,7 +51,6 @@ public class EmailService
                 mailMessage.Attachments.Add(attachment);
 
                 await smtpClient.SendMailAsync(mailMessage);
-                Console.WriteLine("Email sent successfully!");
             }
             else
             {
