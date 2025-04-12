@@ -19,10 +19,13 @@ public class EmailService
 
         if (string.IsNullOrWhiteSpace(smtpEmail) || string.IsNullOrWhiteSpace(smtpPassword))
         {
-            throw new InvalidOperationException("SMTP credentials are not configure.");
+            throw new InvalidOperationException("SMTP credentials are not configured.");
         }
 
-        string participantFirstName = participant.Split(" ")[0];
+        string participantFirstName = participant.Contains(" ")
+                                    ? participant.Split(" ")[0]
+                                    : participant;
+
         string subjectText = $"{course} Certificate";
         string bodyText = $"Congratulations, {participantFirstName}!\n\nThis is your certificate for the successful completion of the {course} course on Canvas.";
 
@@ -44,7 +47,7 @@ public class EmailService
 
             if (File.Exists(pdfPath))
             {
-                var attachment = new Attachment(pdfPath, "application/pdf")
+                using var attachment = new Attachment(pdfPath, "application/pdf")
                 {
                     Name = $"{course} Certificate"
                 };
