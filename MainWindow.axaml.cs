@@ -97,10 +97,13 @@ public partial class MainWindow : Window
             PdfDocument pdf = CertificateService.CreatePdf(data);
             fullFilePath = Path.Combine(folderPath, fileName);
             pdf.Save(fullFilePath);
-            await EmailService.SendAsync(email, participant, course, fullFilePath);
 
-            message.Classes.Set("success", true);
-            message.Text = "Email sent successfully!";
+            if (isEmailChecked)
+            {
+                await EmailService.SendAsync(email, participant, course, fullFilePath);
+                message.Classes.Set("success", true);
+                message.Text = "Email sent successfully!";
+            }
 
             if (!isSaveLocallyChecked)
             {
@@ -108,7 +111,8 @@ public partial class MainWindow : Window
             }
             else
             {
-                message.Text = $"File has been saved to {fullFilePath}";
+                message.Classes.Set("success", true);
+                message.Text = $"File has been saved to {folderPath}";
             }
         }
         catch (Exception)
