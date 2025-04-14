@@ -123,8 +123,7 @@ public partial class MainWindow : Window
             else
             {
                 message.Classes.Set("success", true);
-                if (message.Text == "Email sent successfuly!")
-                    message.Text += $"File has been saved to {folderPath}";
+                message.Text = $"File has been saved to {folderPath}";
             }
         }
         catch (Exception)
