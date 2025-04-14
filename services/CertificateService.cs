@@ -34,7 +34,7 @@ public class CertificateService
         gfx.DrawString(data.Course.ToUpper(), courseFont, yellowBrush, new XPoint(1220, 485), XStringFormats.Center);
         gfx.DrawString(data.Date.ToShortDateString(), dateFont, whiteBrush, new XPoint(1475, 1410), XStringFormats.Center);
         gfx.DrawString($"This Certificate is presented to {data.Participant} for their outstanding", smallFont, whiteBrush, new XPoint(1220, 1130), XStringFormats.Center);
-        gfx.DrawString($"completion of the {data.Course} course as a {data.Role}.", smallFont, whiteBrush, new XPoint(1220, 1170), XStringFormats.Center);
+        gfx.DrawString($"completion of the {data.Course} course as {data.Role}.", smallFont, whiteBrush, new XPoint(1220, 1170), XStringFormats.Center);
 
         return document;
     }
