@@ -2,10 +2,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="400"
+        mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="350"
         x:Class="CanvasCertificateGenerator.MainWindow"
         Title="Canvas Certificate Generator"
-        Width="600" Height="450">
+        Width="600" Height="350">
     <StackPanel>
         <Grid Margin="10" ColumnDefinitions="Auto, Auto" RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto" HorizontalAlignment="Center">
             <Label Grid.Row="0" Grid.Column="0" Margin="10">Participant Name:</Label>
@@ -14,10 +14,10 @@
             <TextBox Grid.Row="1" Grid.Column="1" Margin="0 5" Name="courseName"/>
             <Label Grid.Row="2" Grid.Column="0" Margin="10">Completion Date:</Label>
             <DatePicker Grid.Row="2" Grid.Column="1" Margin="10" Name="completionDate"/>
-            <Label Grid.Row="3" Grid.Column="0" Margin="10">Student Email:</Label>
-            <TextBox Grid.Row="3" Grid.Column="1" Margin="0 5" Name="studentEmail"/>
-            <Label Grid.Row="4" Grid.Column="0" Margin="10">Send Email?</Label>
-            <CheckBox Grid.Row="4" Grid.Column="1" Margin="0 5" Name="sendEmail"/>
+            <Label Grid.Row="3" Grid.Column="0" Margin="10">Send Email?</Label>
+            <CheckBox Grid.Row="3" Grid.Column="1" Margin="0 5" Name="sendEmail" Checked="SendEmailCheckbox_OnChecked" Unchecked="SendEmailCheckbox_OnUnChecked"/>
+            <Label Grid.Row="4" Grid.Column="0" Margin="10" Name="studentEmailLabel" IsVisible="False">Student Email:</Label>
+            <TextBox Grid.Row="4" Grid.Column="1" Margin="0 5" Name="studentEmail" IsVisible="False"/>
 
             <Label Grid.Row="5" Grid.Column="0" Margin="10">Save a version locally?</Label>
             <CheckBox Grid.Row="5" Grid.Column="1" Margin="0 5" Name="saveLocally" Checked="SaveLocallyCheckbox_OnChecked" Unchecked="SaveLocallyCheckbox_OnUnChecked"/>
@@ -26,7 +26,7 @@
             <TextBlock Grid.Row="7" Grid.Column="0" Name="filePathDisplayLabel" IsVisible="False">Selected Destination:</TextBlock>
             <TextBlock Grid.Row="7" Grid.Column="1" Name="filePathMessage" IsVisible="False"></TextBlock>
         </Grid>
-        <TextBlock Margin="10" Name="message" HorizontalAlignment="Center"></TextBlock>
-        <Button Margin="10" Click="GeneratePdfButton_OnClick" HorizontalAlignment="Center">Generate</Button>
+        <TextBlock Margin="5" Name="message" HorizontalAlignment="Center"></TextBlock>
+        <Button Margin="5" Click="GeneratePdfButton_OnClick" HorizontalAlignment="Center">Generate</Button>
     </StackPanel>
 </Window>

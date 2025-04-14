@@ -69,7 +69,7 @@ public partial class MainWindow : Window
         pdfDestinationButton.IsVisible = true;
         filePathDisplayLabel.IsVisible = true;
         filePathMessage.IsVisible = true;
-        Height = 500;
+        Height += 50;
     }
 
     private void SaveLocallyCheckbox_OnUnChecked(object? sender, RoutedEventArgs e)
@@ -78,7 +78,19 @@ public partial class MainWindow : Window
         pdfDestinationButton.IsVisible = false;
         filePathDisplayLabel.IsVisible = false;
         filePathMessage.IsVisible = false;
-        Height = 450;
+        Height -= 50;
+    }
+    private void SendEmailCheckbox_OnChecked(object? sender, RoutedEventArgs e)
+    {
+        studentEmail.IsVisible = true;
+        studentEmailLabel.IsVisible = true;
+        Height += 25;
+    }
+    private void SendEmailCheckbox_OnUnChecked(object? sender, RoutedEventArgs e)
+    {
+        studentEmail.IsVisible = false;
+        studentEmailLabel.IsVisible = false;
+        Height -= 25;
     }
 
     private async void GeneratePdfButton_OnClick(object? sender, RoutedEventArgs e)
