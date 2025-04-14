@@ -8,8 +8,6 @@ using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
 using PdfSharpCore.Pdf;
 using PdfSharpCore.Fonts;
-using System.Threading.Tasks.Dataflow;
-using Tmds.DBus.Protocol;
 
 public partial class MainWindow : Window
 {
