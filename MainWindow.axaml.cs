@@ -16,12 +16,12 @@ public partial class MainWindow : Window
         string Participant,
         string Course,
         DateTime Date,
-        string ParticipantRole
+        string Role
     );
 
     private string participant = "";
     private string course = "";
-    private string participantRole = "";
+    private string role = "";
     private string email = "";
     private DateTime date;
     private bool isEmailChecked = false;
@@ -103,7 +103,7 @@ public partial class MainWindow : Window
                 return;
             }
 
-            CertificateData data = new(participant, course, date, participantRole);
+            CertificateData data = new(participant, course, date, role);
             PdfDocument pdf = CertificateService.CreatePdf(data);
             fullFilePath = Path.Combine(folderPath, fileName);
             pdf.Save(fullFilePath);
@@ -137,7 +137,7 @@ public partial class MainWindow : Window
         course = courseName.Text ?? string.Empty;
         date = completionDate.SelectedDate?.DateTime ?? DateTime.Today;
         fileName = $"{participant.Replace(" ", "_").ToLower()}_{course.Replace(" ", "_").ToLower()}_certificate.pdf";
-        participantRole = "participant";
+        role = participantRole.Text ?? string.Empty;
         isEmailChecked = sendEmail.IsChecked ?? false;
         isSaveLocallyChecked = saveLocally.IsChecked ?? false;
         email = studentEmail.Text ?? string.Empty;
