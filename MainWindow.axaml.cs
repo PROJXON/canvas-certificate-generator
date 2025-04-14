@@ -95,6 +95,7 @@ public partial class MainWindow : Window
     {
         try
         {
+            message.Text = "Generating PDF...";
             GatherInput();
 
             if (!ValidateInput())
@@ -122,7 +123,8 @@ public partial class MainWindow : Window
             else
             {
                 message.Classes.Set("success", true);
-                message.Text = $"File has been saved to {folderPath}";
+                if (message.Text == "Email sent successfuly!")
+                    message.Text += $"File has been saved to {folderPath}";
             }
         }
         catch (Exception)
