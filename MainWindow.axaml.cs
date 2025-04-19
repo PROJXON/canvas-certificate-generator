@@ -111,7 +111,11 @@ public partial class MainWindow : Window
 
             if (isEmailChecked)
             {
-                await EmailService.SendAsync(email, participant, course, fullFilePath);
+                using var ms = new MemoryStream();
+                pdf.Save(ms, false);
+                byte[] pdfBytes = ms.ToArray();
+
+                await EmailService.SendEmailViaLambdaAsync(email, participant, course, pdfBytes);
                 message.Classes.Set("success", true);
                 message.Text = "Email sent successfully!";
             }
