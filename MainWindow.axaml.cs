@@ -130,9 +130,10 @@ public partial class MainWindow : Window
                 message.Text = $"File has been saved to {folderPath}";
             }
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            throw;
+            File.AppendAllText("error.log", $"{DateTime.Now}: {ex.Message}{Environment.NewLine}{ex.StackTrace}{Environment.NewLine}");
+            message.Text = "An error occurred. Please check the logs.";
         }
     }
 
