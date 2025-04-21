@@ -22,10 +22,7 @@ public partial class MainWindow : Window
     private string participant = "";
     private string course = "";
     private string role = "";
-    private string email = "";
     private DateTime date;
-    private bool isEmailChecked = false;
-    private bool isSaveLocallyChecked = false;
     private string fileName = "";
     private string fullFilePath = "";
     private string folderPath = "";
@@ -61,37 +58,7 @@ public partial class MainWindow : Window
         }
     }
 
-    private void SaveLocallyCheckbox_OnChecked(object? sender, RoutedEventArgs e)
-    {
-        pdfDestinationLabel.IsVisible = true;
-        pdfDestinationButton.IsVisible = true;
-        filePathDisplayLabel.IsVisible = true;
-        filePathMessage.IsVisible = true;
-        Height += 50;
-    }
-
-    private void SaveLocallyCheckbox_OnUnChecked(object? sender, RoutedEventArgs e)
-    {
-        pdfDestinationLabel.IsVisible = false;
-        pdfDestinationButton.IsVisible = false;
-        filePathDisplayLabel.IsVisible = false;
-        filePathMessage.IsVisible = false;
-        Height -= 50;
-    }
-    private void SendEmailCheckbox_OnChecked(object? sender, RoutedEventArgs e)
-    {
-        studentEmail.IsVisible = true;
-        studentEmailLabel.IsVisible = true;
-        Height += 25;
-    }
-    private void SendEmailCheckbox_OnUnChecked(object? sender, RoutedEventArgs e)
-    {
-        studentEmail.IsVisible = false;
-        studentEmailLabel.IsVisible = false;
-        Height -= 25;
-    }
-
-    private async void GeneratePdfButton_OnClick(object? sender, RoutedEventArgs e)
+    private void GeneratePdfButton_OnClick(object? sender, RoutedEventArgs e)
     {
         try
         {
@@ -109,26 +76,8 @@ public partial class MainWindow : Window
             fullFilePath = Path.Combine(folderPath, fileName);
             pdf.Save(fullFilePath);
 
-            if (isEmailChecked)
-            {
-                using var ms = new MemoryStream();
-                pdf.Save(ms, false);
-                byte[] pdfBytes = ms.ToArray();
-
-                await EmailService.SendEmailViaLambdaAsync(email, participant, course, pdfBytes);
-                message.Classes.Set("success", true);
-                message.Text = "Email sent successfully!";
-            }
-
-            if (!isSaveLocallyChecked)
-            {
-                File.Delete(fullFilePath);
-            }
-            else
-            {
-                message.Classes.Set("success", true);
-                message.Text = $"File has been saved to {folderPath}";
-            }
+            message.Classes.Set("success", true);
+            message.Text = $"File has been saved to {folderPath}";
         }
         catch (Exception ex)
         {
@@ -144,9 +93,6 @@ public partial class MainWindow : Window
         date = completionDate.SelectedDate?.DateTime ?? DateTime.Today;
         fileName = $"{participant.Replace(" ", "_").ToLower()}_{course.Replace(" ", "_").ToLower()}_certificate.pdf";
         role = participantRole.Text ?? string.Empty;
-        isEmailChecked = sendEmail.IsChecked ?? false;
-        isSaveLocallyChecked = saveLocally.IsChecked ?? false;
-        email = studentEmail.Text ?? string.Empty;
     }
 
     private bool ValidateInput()
@@ -159,19 +105,7 @@ public partial class MainWindow : Window
             return false;
         }
 
-        if (isEmailChecked && !EmailService.Validate(email))
-        {
-            message.Text = "Missing or invalid email address. Please provide a valid email.";
-            return false;
-        }
-
-        if (!isEmailChecked && !isSaveLocallyChecked)
-        {
-            message.Text = "Please select whether you would like to save the pdf, email it, or both.";
-            return false;
-        }
-
-        if (isSaveLocallyChecked && string.IsNullOrWhiteSpace(folderPath))
+        if (string.IsNullOrWhiteSpace(folderPath))
         {
             message.Text = "Please select a folder to save the file in.";
             return false;
@@ -185,7 +119,6 @@ public partial class MainWindow : Window
         participantName.Classes.Set("invalid", string.IsNullOrWhiteSpace(participant));
         courseName.Classes.Set("invalid", string.IsNullOrWhiteSpace(course));
         completionDate.Classes.Set("invalid", !completionDate.SelectedDate.HasValue);
-        pdfDestinationButton.Classes.Set("invalid", string.IsNullOrWhiteSpace(folderPath) && isSaveLocallyChecked);
-        studentEmail.Classes.Set("invalid", !EmailService.Validate(email) && isEmailChecked);
+        pdfDestinationButton.Classes.Set("invalid", string.IsNullOrWhiteSpace(folderPath));
     }
 }
