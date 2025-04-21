@@ -1,69 +1,45 @@
-namespace CanvasCertificateGenerator.Services;
-
 using System;
 using System.Threading.Tasks;
-using DotNetEnv;
-using System.Net.Mail;
-using System.Net;
 using System.ComponentModel.DataAnnotations;
-using System.IO;
+
+using System.Net.Http;
+using System.Text.Json;
+
+namespace CanvasCertificateGenerator.Services;
 
 public class EmailService
 {
-    //
-    public static async Task SendAsync(string email, string participant, string course, string pdfPath)
+    public string To { get; set; } = "";
+    public string Name { get; set; } = "";
+    public string Course { get; set; } = "";
+    public string Base64Pdf { get; set; } = "";
+
+    public static async Task SendEmailViaLambdaAsync(string email, string name, string course, byte[] pdfBytes)
     {
-        Env.Load();
-        string smtpEmail = Environment.GetEnvironmentVariable("SMTP_EMAIL") ?? string.Empty;
-        string smtpPassword = Environment.GetEnvironmentVariable("SMTP_PASSWORD") ?? string.Empty;
-
-        if (string.IsNullOrWhiteSpace(smtpEmail) || string.IsNullOrWhiteSpace(smtpPassword))
+        var payload = new EmailService
         {
-            throw new InvalidOperationException("SMTP credentials are not configured.");
-        }
+            To = email,
+            Name = name,
+            Course = course,
+            Base64Pdf = Convert.ToBase64String(pdfBytes)
+        };
 
-        string participantFirstName = participant.Contains(" ")
-                                    ? participant.Split(" ")[0]
-                                    : participant;
+        var json = JsonSerializer.Serialize(payload);
+        var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
 
-        string subjectText = $"{course} Certificate";
-        string bodyText = $"Congratulations, {participantFirstName}!\n\nThis is your certificate for the successful completion of the {course} course on Canvas.";
+        using var httpClient = new HttpClient();
 
-        // Set up the SMTP client
-        using var smtpClient = new SmtpClient("smtp.gmail.com", 587);
+        var lambdaEndpoint = "placeholder";
+
+        var response = await httpClient.PostAsync(lambdaEndpoint, content);
+
+        if (!response.IsSuccessStatusCode)
         {
-            smtpClient.Credentials = new NetworkCredential(smtpEmail, smtpPassword);
-            smtpClient.EnableSsl = true;
-
-            // Create the email message
-            var mailMessage = new MailMessage
-            {
-                From = new MailAddress(smtpEmail, "PROJXON Programs"),
-                Subject = subjectText,
-                Body = bodyText,
-                IsBodyHtml = false
-            };
-            mailMessage.To.Add(email);
-
-            if (File.Exists(pdfPath))
-            {
-                using var attachment = new Attachment(pdfPath, "application/pdf")
-                {
-                    Name = $"{course} Certificate"
-                };
-                mailMessage.Attachments.Add(attachment);
-
-                await smtpClient.SendMailAsync(mailMessage);
-            }
-            else
-            {
-                Console.WriteLine("Failed to find attachment.");
-            }
-
+            var error = await response.Content.ReadAsStringAsync();
+            throw new Exception($"Failed to send email: {response.StatusCode}\n{error}");
         }
     }
 
-    // Validate recipient's email address
     public static bool Validate(string email)
     {
         if (string.IsNullOrWhiteSpace(email))
