@@ -115,7 +115,7 @@ public partial class MainWindow : Window
                 pdf.Save(ms, false);
                 byte[] pdfBytes = ms.ToArray();
 
-                await EmailService.SendEmailViaLambdaAsync(email, participant, course, pdfBytes);
+                await EmailService.SendEmailViaLambdaAsync(email, participant, course, pdfBytes, fileName);
                 message.Classes.Set("success", true);
                 message.Text = "Email sent successfully!";
             }
