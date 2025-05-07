@@ -12,6 +12,7 @@ Generated PDFs can be saved on the user's computer, or automatically sent to the
 3. Open the folder where you extracted the files and double click the executable name CanvasCertificateGenerator.
    - You will most likely see a popup confirming that you want to run the executable if you are using Windows. If this happens, click "More info" and then select "Run Anyway".
 4. Fill out the input and click "Generate". Then, locate the generated PDF(s) in the destination folder you selected.
+   - If sending an email is selected, a password prompt will appear.
 
 ## Having Issues?
 
