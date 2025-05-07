@@ -94,6 +94,11 @@ public partial class MainWindow : Window
         Height -= 40;
     }
 
+    private async void ReEnterPassword_OnClick(object? sender, RoutedEventArgs e)
+    {
+        await OpenPasswordPrompt();
+    }
+
     private async void GeneratePdfButton_OnClick(object? sender, RoutedEventArgs e)
     {
         try
