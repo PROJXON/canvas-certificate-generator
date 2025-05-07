@@ -146,7 +146,8 @@ public partial class MainWindow : Window
         catch (Exception ex)
         {
             File.AppendAllText("error.log", $"{DateTime.Now}: {ex.Message}{Environment.NewLine}{ex.StackTrace}{Environment.NewLine}");
-            message.Text = "An error occurred. Please check the logs.";
+            message.Classes.Set("invalid", true);
+            message.Text = "An error occurred. Try reentering password.";
         }
     }
 
