@@ -1,13 +1,16 @@
-namespace CanvasCertificateGenerator;
 using CanvasCertificateGenerator.Services;
-
 using System;
+using Avalonia.Controls.ApplicationLifetimes;
 using System.IO;
+using System.Threading.Tasks;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
 using PdfSharpCore.Pdf;
 using PdfSharpCore.Fonts;
+
+namespace CanvasCertificateGenerator;
 
 public partial class MainWindow : Window
 {
@@ -29,12 +32,12 @@ public partial class MainWindow : Window
     private string fileName = "";
     private string fullFilePath = "";
     private string folderPath = "";
+    public static string EmailPassword = "";
 
     public MainWindow()
     {
         InitializeComponent();
-
-        // Register the custom font resolver
+        
         GlobalFontSettings.FontResolver = new CustomFontResolver();
     }
 
@@ -50,7 +53,7 @@ public partial class MainWindow : Window
             // Opens a dialog and allows the user to select a destination folder
             var result = await StorageProvider.OpenFolderPickerAsync(options);
 
-            if (result != null && result.Count > 0)
+            if (result.Count > 0)
             {
                 // sets the selected folder as the path variable
                 folderPath = result[0].Path.LocalPath;
@@ -111,11 +114,15 @@ public partial class MainWindow : Window
 
             if (isEmailChecked)
             {
+                if (string.IsNullOrWhiteSpace(EmailPassword))
+                {
+                    await OpenPasswordPrompt();
+                }
+                
                 using var ms = new MemoryStream();
                 pdf.Save(ms, false);
-                byte[] pdfBytes = ms.ToArray();
-
-                await EmailService.SendEmailViaLambdaAsync(email, participant, course, pdfBytes, fileName);
+                var pdfBytes = ms.ToArray();
+                await EmailService.SendEmailViaLambdaAsync(email, participant, course, pdfBytes, fileName, EmailPassword);
                 message.Classes.Set("success", true);
                 message.Text = "Email sent successfully!";
             }
@@ -187,5 +194,14 @@ public partial class MainWindow : Window
         completionDate.Classes.Set("invalid", !completionDate.SelectedDate.HasValue);
         pdfDestinationButton.Classes.Set("invalid", string.IsNullOrWhiteSpace(folderPath) && isSaveLocallyChecked);
         studentEmail.Classes.Set("invalid", !EmailService.Validate(email) && isEmailChecked);
+    }
+
+    private async Task OpenPasswordPrompt()
+    {
+        var passwordPrompt = new PasswordPrompt();
+        if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+        {
+            await passwordPrompt.ShowDialog(desktop.MainWindow);
+        }
     }
 }
