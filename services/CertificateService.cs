@@ -18,17 +18,14 @@ public class CertificateService
         using var background = XImage.FromFile("./assets/Template.png");
         gfx.DrawImage(background, 0, 0, page.Width, page.Height);
 
-
         var smallFont = new XFont("Roboto", 26, XFontStyle.Regular);
         var dateFont = new XFont("Roboto", 24, XFontStyle.Regular);
         var whiteBrush = XBrushes.White;
         var yellowBrush = new XSolidBrush(XColor.FromArgb(255, 215, 0));
-
-        // Draw the course name (max 1400 points wide)
+        
         var courseFont = FitTextToWidth(gfx, data.Course.ToUpper(), "Geologica", XFontStyle.Bold, 900, 90);
         gfx.DrawString(data.Course.ToUpper(), courseFont, yellowBrush, new XPoint(1220, 485), XStringFormats.Center);
-
-        // Draw the participant's name (max 1600 points wide)
+        
         var nameFont = FitTextToWidth(gfx, data.Participant, "Geologica", XFontStyle.Bold, 900, 90);
         gfx.DrawString(data.Participant, nameFont, whiteBrush, new XPoint(1220, 980), XStringFormats.Center);
 
