@@ -1,3 +1,5 @@
+using System.Globalization;
+
 namespace CanvasCertificateGenerator.Services;
 
 using PdfSharpCore.Pdf;
@@ -32,7 +34,7 @@ public class CertificateService
 
         gfx.DrawString(data.Participant, nameFont, whiteBrush, new XPoint(1220, 980), XStringFormats.Center);
         gfx.DrawString(data.Course.ToUpper(), courseFont, yellowBrush, new XPoint(1220, 485), XStringFormats.Center);
-        gfx.DrawString(data.Date.ToShortDateString(), dateFont, whiteBrush, new XPoint(1480, 1410), XStringFormats.Center);
+        gfx.DrawString(data.Date.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture), dateFont, whiteBrush, new XPoint(1480, 1410), XStringFormats.Center);
         gfx.DrawString($"This Certificate is presented to {data.Participant} for their outstanding", smallFont, whiteBrush, new XPoint(1220, 1130), XStringFormats.Center);
         gfx.DrawString($"completion of the {data.Course} course as {data.Role}.", smallFont, whiteBrush, new XPoint(1220, 1170), XStringFormats.Center);
 
