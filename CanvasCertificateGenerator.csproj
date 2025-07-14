@@ -13,6 +13,15 @@
     <DebugSymbols>true</DebugSymbols>
 </PropertyGroup>
 
+  <PropertyGroup Condition="'$(RuntimeIdentifier)' == 'osx-x64' OR '$(RuntimeIdentifier)' == 'osx-arm64'">
+    <PublishSingleFile>true</PublishSingleFile>
+    <SelfContained>true</SelfContained>
+  </PropertyGroup>
+
+  <Target Name="SetExecutablePermissions" AfterTargets="Publish" Condition="'$(RuntimeIdentifier)' == 'osx-x64' OR '$(RuntimeIdentifier)' == 'osx-arm64'">
+    <Exec Command="chmod +x &quot;$(PublishDir)$(AssemblyName)&quot;" ContinueOnError="true" />
+  </Target>
+
 <ItemGroup>
     <Content Include="assets\**\*" CopyToOutputDirectory="PreserveNewest" />
 </ItemGroup>
