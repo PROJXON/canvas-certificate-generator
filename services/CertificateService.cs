@@ -1,4 +1,6 @@
+using System;
 using System.Globalization;
+using System.IO;
 
 namespace CanvasCertificateGenerator.Services;
 
@@ -15,17 +17,17 @@ public class CertificateService
         page.Height = XUnit.FromPoint(1545);
         using var gfx = XGraphics.FromPdfPage(page);
 
-        using var background = XImage.FromFile("./assets/Template.png");
+        using var background = XImage.FromFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "assets", "Template.png"));
         gfx.DrawImage(background, 0, 0, page.Width, page.Height);
 
         var smallFont = new XFont("Roboto", 26, XFontStyle.Regular);
         var dateFont = new XFont("Roboto", 24, XFontStyle.Regular);
         var whiteBrush = XBrushes.White;
         var yellowBrush = new XSolidBrush(XColor.FromArgb(255, 215, 0));
-        
+
         var courseFont = FitTextToWidth(gfx, data.Course.ToUpper(), "Geologica", XFontStyle.Bold, 900, 90);
         gfx.DrawString(data.Course.ToUpper(), courseFont, yellowBrush, new XPoint(1220, 485), XStringFormats.Center);
-        
+
         var nameFont = FitTextToWidth(gfx, data.Participant, "Geologica", XFontStyle.Bold, 900, 90);
         gfx.DrawString(data.Participant, nameFont, whiteBrush, new XPoint(1220, 980), XStringFormats.Center);
 
